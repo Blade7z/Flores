@@ -34,7 +34,7 @@ const MID_ROW = makeRow(14, { bottom0: 25, bottom1: 18, size0: 130, size1: 215 }
 export function FlowerField({ grown }: { grown: readonly GrownFlower[] }) {
   const seeds = useMemo<SeedSpec[]>(() => {
     const all = [...BACK_ROW, ...MID_ROW].sort((a, b) => a.left - b.left);
-    return all.map((f, i) => ({ ...f, seedD: i * 0.085 + rand(0, 0.12) }));
+    return all.map((f, i) => ({ ...f, seedD: i * 0.24 + rand(0, 0.3) }));
   }, []);
 
   return (

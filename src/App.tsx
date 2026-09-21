@@ -1,4 +1,4 @@
-﻿import { useCallback, useRef, useState, type MouseEvent } from 'react';
+import { useCallback, useRef, useState, type MouseEvent } from 'react';
 import { Sun } from './components/Sun';
 import { Clouds } from './components/Clouds';
 import { Ground } from './components/Ground';
@@ -88,7 +88,7 @@ function App() {
       ref={sceneRef}
       className={`scene ${opened ? '' : 'scene--dark'}`}
       onClick={handleSceneClick}
-      aria-label="JardÃ­n de flores amarillas interactivo"
+      aria-label="Jardín de flores amarillas interactivo"
     >
       <Sun />
       <Clouds />
@@ -114,21 +114,21 @@ function App() {
       {opened && (
         <div className="overlay">
           <div className="overlay__inner">
-            <span className="eyebrow">Un jardÃ­n hecho para vos</span>
+            <span className="eyebrow">Un jardín hecho para vos</span>
             <h1 className="title">
               Flores amarillas
               <span className="title-em">para vos</span>
             </h1>
             <p className="verse">
-              Para la persona que enciende mis dÃ­as: cada pÃ©talo guarda un poco de tu luz.
+              Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
             </p>
             <span className="hint">
               <FlowerIcon />
-              TocÃ¡ en cualquier lado y plantÃ¡ tu flor
+              Tocá en cualquier lado y plantá tu flor
             </span>
             {grown.length >= 3 && (
               <span className="counter">
-                Tu jardÃ­n tiene {grown.length} {grown.length === 1 ? 'flor' : 'flores'}
+                Tu jardín tiene {grown.length} {grown.length === 1 ? 'flor' : 'flores'}
               </span>
             )}
           </div>
@@ -143,31 +143,28 @@ function App() {
 
       <div className="vignette" />
 
-      {!opened && (
-        <div className="curtain">
-          <div className="curtain__inner">
-            <svg className="curtain__flower" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <g transform="translate(12 12)">
-                <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" />
-                <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(72)" />
-                <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(144)" />
-                <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(216)" />
-                <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(288)" />
-                <circle r="3" />
-              </g>
-            </svg>
-            <p className="curtain__line">Hay un jardÃ­n esperÃ¡ndote</p>
-            <button type="button" className="cta cta--open" onClick={openGarden}>
-              <HeartIcon />
-              Ãbreme
-            </button>
-            <span className="curtain__hint">un clic y todo florece</span>
-          </div>
+      <div className={opened ? 'curtain curtain--open' : 'curtain'} aria-hidden={opened}>
+        <div className="curtain__inner">
+          <svg className="curtain__flower" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <g transform="translate(12 12)">
+              <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" />
+              <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(72)" />
+              <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(144)" />
+              <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(216)" />
+              <ellipse cx="0" cy="-7.5" rx="3" ry="5.4" transform="rotate(288)" />
+              <circle r="3" />
+            </g>
+          </svg>
+          <p className="curtain__line">Hay un jardín esperándote</p>
+          <button type="button" className="cta cta--open" onClick={openGarden}>
+            <HeartIcon />
+            Ábreme
+          </button>
+          <span className="curtain__hint">un clic y todo florece</span>
         </div>
-      )}
+      </div>
     </main>
   );
 }
 
 export default App;
-
