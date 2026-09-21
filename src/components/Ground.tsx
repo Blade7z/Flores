@@ -1,8 +1,18 @@
+const HILL_SIZES = {
+  far: '34vh',
+  near: '24vh',
+} as const;
+
 export function Ground({ layer }: { layer: 'far' | 'near' }) {
   if (layer === 'far') {
     return (
       <div className="hill hill--far" aria-hidden="true">
-        <svg viewBox="0 0 1440 320" preserveAspectRatio="none" width="100%" height="150">
+        <svg
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          width="100%"
+          style={{ height: HILL_SIZES.far }}
+        >
           <defs>
             <linearGradient id="hillFarFill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="#8fcd83" />
@@ -27,7 +37,12 @@ export function Ground({ layer }: { layer: 'far' | 'near' }) {
 
   return (
     <div className="hill hill--near" aria-hidden="true">
-      <svg viewBox="0 0 1440 360" preserveAspectRatio="none" width="100%" height="200">
+      <svg
+        viewBox="0 0 1440 360"
+        preserveAspectRatio="none"
+        width="100%"
+        style={{ height: HILL_SIZES.near }}
+      >
         <defs>
           <linearGradient id="hillNearFill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor="#59b06a" />

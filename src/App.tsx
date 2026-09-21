@@ -2,7 +2,6 @@ import { useCallback, useRef, useState, type MouseEvent } from 'react';
 import { Sun } from './components/Sun';
 import { Clouds } from './components/Clouds';
 import { Ground } from './components/Ground';
-import { HeroFlora } from './components/HeroFlora';
 import { Flower } from './components/Flower';
 import { FlowerField } from './components/FlowerField';
 import { GrassTufts } from './components/GrassTufts';
@@ -92,45 +91,40 @@ function App() {
       onClick={handleSceneClick}
       aria-label="Jardín de flores amarillas interactivo"
     >
-      <section className="hero">
-        <Sun />
-        <Clouds />
-        <Ground layer="far" />
-        <div className="field-layer hero-flora" aria-hidden="true">
-          {opened && <HeroFlora />}
-        </div>
-        <Ground layer="near" />
-
-        {opened && (
-          <div className="overlay">
-            <div className="overlay__inner">
-              <span className="eyebrow">Un jardín hecho para ti</span>
-              <h1 className="title">
-                Flores amarillas
-                <span className="title-em">para ti</span>
-              </h1>
-              <p className="verse">
-                Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
-              </p>
-              <span className="hint">
-                <FlowerIcon />
-                Tocá en cualquier lado y plantá tu flor
-              </span>
-            </div>
-          </div>
-        )}
-
-        <div className="vignette" />
-      </section>
+      <Sun />
+      <Clouds />
 
       {opened && (
-        <section className="garden">
-          <FlowerField />
+        <div className="overlay">
+          <div className="overlay__inner">
+            <span className="eyebrow">Un jardín hecho para ti</span>
+            <h1 className="title">
+              Flores amarillas
+              <span className="title-em">para ti</span>
+            </h1>
+            <p className="verse">
+              Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
+            </p>
+            <span className="hint">
+              <FlowerIcon />
+              Tocá en cualquier lado y plantá tu flor
+            </span>
+          </div>
+        </div>
+      )}
+
+      <Ground layer="far" />
+      <Ground layer="near" />
+
+      {opened && <FlowerField />}
+
+      {opened && (
+        <>
           <GrassTufts />
           <Bugs />
           <Motes />
           <PetalRain />
-        </section>
+        </>
       )}
 
       <div className="field-layer field-layer--front" aria-hidden="true">
@@ -160,6 +154,8 @@ function App() {
           <Burst key={b.id} item={b} onDone={removeBurst} />
         ))}
       </div>
+
+      <div className="vignette" />
 
       <div className={opened ? 'curtain curtain--open' : 'curtain'} aria-hidden={opened}>
         <div className="curtain__inner">

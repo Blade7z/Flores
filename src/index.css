@@ -102,6 +102,7 @@ body {
    ============================================================ */
 .scene {
   position: relative;
+  height: 220vh;
   min-height: 100vh;
   overflow: hidden;
   user-select: none;
@@ -121,23 +122,10 @@ body {
   cursor: default;
 }
 
-/* HERO: primera pantalla, mensaje arriba, flores chicas abajo */
-.hero {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
+/* PÁGINA ÚNICA CONTINUA: el scroll estira el mismo jardín,
+   el mensaje queda arriba, el pasto abajo y el sol acompaña.
 
-/* GARDEN: al hacer scroll, cada flor crece a medida que entra */
-.garden {
-  position: relative;
-  width: 100%;
-  min-height: 220vh;
-}
-
-/* SUN ---------------------------------------------------- */
+   SUN ---------------------------------------------------- */
 .sun {
   position: absolute;
   left: auto;
@@ -146,7 +134,11 @@ body {
   width: clamp(130px, 20vw, 280px);
   aspect-ratio: 1;
   pointer-events: none;
-  animation: sun-breathe var(--dur-slow) ease-in-out infinite;
+  animation:
+    sun-breathe var(--dur-slow) ease-in-out infinite,
+    sun-follow 1s linear;
+  animation-timeline: auto, scroll(root);
+  animation-range: auto, 0% 100%;
 }
 
 .sun__disc {
@@ -182,6 +174,11 @@ body {
 @keyframes sun-breathe {
   0%, 100% { scale: 1; }
   50% { scale: 1.035; }
+}
+
+@keyframes sun-follow {
+  0% { translate: 0 0; }
+  100% { translate: 0 52vh; }
 }
 
 @keyframes rotate {
@@ -231,9 +228,10 @@ body {
 
 /* HILLS ------------------------------------------------- */
 .hill {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   pointer-events: none;
   line-height: 0;
@@ -246,12 +244,11 @@ body {
 
 .hill--near {
   z-index: 6;
-  bottom: -1.5%;
 }
 
 .hill--far {
   z-index: 2;
-  bottom: -3%;
+  bottom: -6%;
   opacity: 0.96;
 }
 
@@ -270,41 +267,28 @@ body {
   z-index: 5;
 }
 
-/* Área frontal del hero: flores chicas que asoman delante de las colinas */
-.hero-flora {
-  z-index: 7;
-}
-
+/* Área frontal: flores plantadas al tocar la pantalla */
 .flower {
   position: absolute;
   animation: sway var(--durB, var(--dur-breeze)) var(--delB, 0s) var(--ease-sway) infinite;
   transform-origin: 50% 100%;
 }
 
-.flower--seed {
-  animation:
-    bloom 1.15s var(--ease-spring) var(--seedD, 0.2s) both,
-    sway var(--durB, var(--dur-breeze))
-      calc(1.15s + var(--seedD, 0.2s) + var(--delB, 0s))
-      var(--ease-sway) infinite;
-  transform-origin: 50% 100%;
-  opacity: 0;
-}
-
 .flower--grow__in {
   transform-origin: 50% 100%;
 }
 
-/* Crecimiento ligado al scroll: cada flor del prado brota a medida que entra en pantalla */
+/* Crecimiento ligado al scroll: cada flor del prado crece un poco al bajar,
+   con su propia ventana progresiva (--onX → --endX) */
 .flower__bloom {
   transform-origin: 50% 100%;
   will-change: transform, opacity;
 }
 
-.flower--scroll .flower__bloom {
-  animation: bloom 1.25s var(--ease-spring) both;
-  animation-timeline: view(block);
-  animation-range: entry 8% entry 55%;
+.flower--scrl .flower__bloom {
+  animation: grow-up 1s var(--ease-spring) both;
+  animation-timeline: scroll(root);
+  animation-range: var(--onX, 6%) var(--endX, 34%);
 }
 
 .flower--grow__in .flower__bloom {
@@ -324,6 +308,11 @@ body {
 @keyframes bloom {
   0% { transform: scale(0) translateY(18px); opacity: 0; }
   60% { transform: scale(1.1) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes grow-up {
+  0% { transform: scale(0.55) translateY(12px); opacity: 0.55; }
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
@@ -523,12 +512,11 @@ body {
 
 /* UI OVERLAY + MESSAGE ---------------------------------- */
 .overlay {
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  height: 100%;
-  z-index: 10;
+  z-index: 15;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -838,8 +826,12 @@ body {
   }
 
   .flower,
-  .flower--seed,
   .flower--grow__in {
+    animation: none;
+    opacity: 1;
+  }
+
+  .flower--scrl .flower__bloom {
     animation: none;
     opacity: 1;
   }
