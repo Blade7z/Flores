@@ -89,7 +89,7 @@ function App() {
       ref={sceneRef}
       className={`scene ${opened ? '' : 'scene--dark'}`}
       onClick={handleSceneClick}
-      aria-label="JardÃƒÂ­n de flores amarillas interactivo"
+      aria-label="Jardín de flores amarillas interactivo"
     >
       <section className="hero">
         <Sun />
@@ -103,17 +103,17 @@ function App() {
         {opened && (
           <div className="overlay">
             <div className="overlay__inner">
-              <span className="eyebrow">Un jardÃƒÂ­n hecho para ti</span>
+              <span className="eyebrow">Un jardín hecho para ti</span>
               <h1 className="title">
                 Flores amarillas
                 <span className="title-em">para ti</span>
               </h1>
               <p className="verse">
-                Para la persona que enciende mis dÃƒÂ­as: cada pÃƒÂ©talo guarda un poco de tu luz.
+                Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
               </p>
               <span className="hint">
                 <FlowerIcon />
-                TocÃƒÂ¡ en cualquier lado y plantÃƒÂ¡ tu flor
+                Tocá en cualquier lado y plantá tu flor
               </span>
             </div>
           </div>
@@ -150,10 +150,10 @@ function App() {
               <circle r="3" />
             </g>
           </svg>
-          <p className="curtain__line">Hay un jardÃƒÂ­n esperÃƒÂ¡ndote</p>
+          <p className="curtain__line">Hay un jardín esperándote</p>
           <button type="button" className="cta cta--open" onClick={openGarden}>
             <HeartIcon />
-            ÃƒÂbreme
+            Ábreme
           </button>
           <span className="curtain__hint">un clic y todo florece</span>
         </div>
