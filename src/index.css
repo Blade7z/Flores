@@ -255,8 +255,8 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 22vh;
-  z-index: 6;
+  height: 30vh;
+  z-index: 7;
   pointer-events: none;
 }
 
@@ -278,7 +278,7 @@ body {
 
 /* FLOWER FIELD ------------------------------------------ */
 .field-layer {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
@@ -288,7 +288,7 @@ body {
 }
 
 .field-layer--front {
-  z-index: 5;
+  z-index: 7;
 }
 
 /* Área frontal: flores plantadas al tocar la pantalla */

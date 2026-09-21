@@ -54,12 +54,12 @@ function App() {
     setBursts((prev) => prev.filter((b) => b.id !== id));
   }, []);
 
-  const plantFlower = useCallback((left: number, y: number) => {
+  const plantFlower = useCallback((left: number, bottom: number) => {
     idRef.current += 1;
     const flower: GrownFlower = {
       id: idRef.current,
       left: Math.min(96, Math.max(4, left)),
-      top: Math.min(95, Math.max(2, y)),
+      top: Math.min(35, Math.max(22, bottom)),
       scale: rand(0.8, 1.35),
       variant: randInt(0, 4),
       flipped: Math.random() > 0.5,
@@ -78,9 +78,10 @@ function App() {
     const rect = sceneRef.current?.getBoundingClientRect();
     if (!rect) return;
     const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    plantFlower(x, y);
-    spawnBurst(Math.min(96, Math.max(4, x)), y, 8);
+    // Convertir clic y a bottom desde el viewport
+    const bottomPct = ((rect.bottom - e.clientY) / rect.height) * 100;
+    plantFlower(x, bottomPct);
+    spawnBurst(Math.min(96, Math.max(4, x)), ((e.clientY - rect.top) / rect.height) * 100, 8);
     chime();
   };
 
@@ -136,7 +137,7 @@ function App() {
               className="flower flower--grow__in"
               style={{
                 left: `calc(${f.left}% - ${size / 2}px)`,
-                top: `${f.top}%`,
+                bottom: `${f.top}%`,
                 width: size,
                 ['--durB' as string]: `${3.6 + f.scale}s`,
               }}

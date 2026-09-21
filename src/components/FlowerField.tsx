@@ -6,7 +6,7 @@ import { rand, randInt } from '../lib/random';
 interface MeadowFlower {
   id: number;
   left: number;
-  top: number;
+  bottom: number;
   size: number;
   variant: number;
   flipped: boolean;
@@ -17,12 +17,14 @@ interface MeadowFlower {
 }
 
 const BASE = Array.from({ length: 16 }).map((_, i) => {
-  const top = rand(30, 86);
+  // bottom % of viewport: near hill top is ~24vh = ~24%.
+  // Flores del fondo más arriba, las del frente más cerca del suelo.
+  const bottom = rand(22, 55);
   return {
     id: i,
     left: Math.min(97, Math.max(3, ((i + 0.5) / 16) * 100 + rand(-4, 4))),
-    top,
-    size: (88 + (top / 100) * 110) * rand(0.9, 1.1),
+    bottom,
+    size: (70 + (bottom / 100) * 80) * rand(0.9, 1.1),
     variant: randInt(0, 4),
     flipped: Math.random() > 0.5,
     durB: rand(4, 6.4),
@@ -34,7 +36,7 @@ export function FlowerField() {
   const meadow = useMemo<MeadowFlower[]>(
     () =>
       BASE.slice()
-        .sort((a, b) => a.top - b.top)
+        .sort((a, b) => b.bottom - a.bottom)
         .map((f, i) => {
           const onX = 4 + i * 3.4;
           return {
@@ -57,7 +59,7 @@ export function FlowerField() {
             className="flower flower--scrl"
             style={{
               left: `calc(${f.left}% - ${f.size / 2}px)`,
-              top: `${f.top}%`,
+              bottom: `${f.bottom}%`,
               width: f.size,
               ['--durB' as string]: `${f.durB}s`,
               ['--delB' as string]: `${f.delB}s`,

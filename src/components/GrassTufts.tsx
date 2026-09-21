@@ -17,7 +17,7 @@ export function GrassTufts() {
     () =>
       Array.from({ length: COUNT }).map(() => ({
         left: rand(2, 98),
-        bottom: rand(2, 13),
+        bottom: rand(20, 32),
         width: rand(22, 40),
         sway: rand(2.6, 4.2),
         delay: rand(0, 2.5),
