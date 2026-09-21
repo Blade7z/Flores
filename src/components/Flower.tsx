@@ -99,32 +99,6 @@ export function Flower({
         {/* Disco central */}
         <circle cx="60" cy="60" r="18.5" fill={`url(#core-${vi})`} stroke="#c98a10" strokeWidth="2.6" />
         <circle cx="60" cy="60" r="14" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.6" />
-
-        {/* Ojos con parpadeo */}
-        <g className="fl-blink" style={{ ['--blk' as string]: '0.4s' }}>
-          <circle cx="51.5" cy="56.5" r="4.6" fill="#4a2a09" />
-          <circle cx="53.2" cy="54.4" r="1.6" fill="#fff" opacity="0.92" />
-        </g>
-        <g className="fl-blink" style={{ ['--blk' as string]: '0.4s' }}>
-          <circle cx="68.5" cy="56.5" r="4.6" fill="#4a2a09" />
-          <circle cx="70.2" cy="54.4" r="1.6" fill="#fff" opacity="0.92" />
-        </g>
-
-        {/* Mejillas */}
-        <ellipse cx="45.5" cy="65.5" rx="4.6" ry="3.1" fill="#ff9d5c" opacity="0.5" />
-        <ellipse cx="74.5" cy="65.5" rx="4.6" ry="3.1" fill="#ff9d5c" opacity="0.5" />
-
-        {/* Sonrisa */}
-        <path
-          d="M53.5 66.5 Q60 73 66.5 66.5"
-          stroke="#4a2a09"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          fill="none"
-        />
-
-        {/* Destello de luz */}
-        <circle cx="55" cy="55" r="1.4" fill="rgba(255,241,176,0.7)" />
       </g>
     </svg>
   );

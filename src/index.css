@@ -318,19 +318,6 @@ body {
   50% { transform: scale(1.04); }
 }
 
-/* Ojos que parpadean de vez en cuando */
-.fl-blink {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
-  animation: fl-blink 4.6s var(--ease-sway) var(--blk, 0s) infinite;
-}
-
-@keyframes fl-blink {
-  0%, 90.5%, 100% { transform: scaleY(1); }
-  93.5% { transform: scaleY(0.12); }
-  96.5% { transform: scaleY(1); }
-}
-
 /* GRASS TUFTS ------------------------------------------- */
 .tufts {
   position: fixed;
@@ -608,26 +595,6 @@ body {
     filter var(--dur-fast);
 }
 
-.cta::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.55) 12%,
-    transparent 26%
-  );
-  animation: shine 3.4s linear infinite;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
-@keyframes shine {
-  to { transform: rotate(360deg); }
-}
-
 .cta:hover {
   transform: translateY(-2px) scale(1.03);
   filter: brightness(1.06);
@@ -677,23 +644,6 @@ body {
   width: 16px;
   height: 16px;
   fill: var(--gold);
-}
-
-.counter {
-  margin: var(--space-s) auto 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.85rem;
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 253, 244, 0.4);
-  background: rgba(20, 60, 40, 0.2);
-  color: var(--ink);
-  font-size: var(--step--1);
-  font-weight: 600;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  animation: fade-up 0.8s var(--ease-spring) both;
 }
 
 /* CURTAIN (entrance) ------------------------------------ */

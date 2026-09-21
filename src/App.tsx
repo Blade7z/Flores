@@ -114,23 +114,18 @@ function App() {
       {opened && (
         <div className="overlay">
           <div className="overlay__inner">
-            <span className="eyebrow">Un jardín hecho para vos</span>
+<span className="eyebrow">Un jardín hecho para ti</span>
             <h1 className="title">
               Flores amarillas
-              <span className="title-em">para vos</span>
+              <span className="title-em">para ti</span>
             </h1>
             <p className="verse">
               Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
             </p>
-            <span className="hint">
+<span className="hint">
               <FlowerIcon />
               Tocá en cualquier lado y plantá tu flor
             </span>
-            {grown.length >= 3 && (
-              <span className="counter">
-                Tu jardín tiene {grown.length} {grown.length === 1 ? 'flor' : 'flores'}
-              </span>
-            )}
           </div>
         </div>
       )}
