@@ -1,0 +1,675 @@
+/* ============================================================
+   TOKENS — Golden Hour Romance
+   ============================================================ */
+:root {
+  /* TYPE — perfect fourth 1.333 (editorial romance) */
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-text: "Quicksand", "Segoe UI", system-ui, sans-serif;
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.563rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;
+  --step-6: 3.815rem;
+
+  /* SPACE — one base unit, multiples only */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+
+  /* COLOR — golden-hour sky over a warm field */
+  --sky-top: #1f2355;
+  --sky-upper: #4b2f7e;
+  --sky-mid: #9c3d78;
+  --sky-low: #e2775f;
+  --sky-horizon: #ffc97a;
+  --sky-horizon-glow: rgba(255, 214, 122, 0.42);
+
+  --ink: #fff8ea;
+  --ink-2: rgba(255, 248, 234, 0.82);
+  --ink-3: rgba(255, 248, 234, 0.6);
+
+  --gold: #ffd34d;
+  --gold-soft: #ffe98f;
+  --petal: #ffc832;
+  --petal-light: #ffe88a;
+  --petal-deep: #f0a71e;
+  --core: #a86613;
+  --core-dark: #6d3f09;
+  --stem: #2f9e5f;
+  --leaf: #57bf7a;
+  --leaf-dark: #1e7c4b;
+
+  --accent: #ff5d73;
+  --accent-deep: #e63652;
+
+  --hill-far: #2c2350;
+  --hill-near: #1d1738;
+
+  /* FORM — one radius, pills only for interactive chrome */
+  --radius: 999px;
+
+  /* MOTION */
+  --dur-fast: 160ms;
+  --dur: 320ms;
+  --dur-slow: 1.1s;
+  --dur-breeze: 4.8s;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sway: ease-in-out;
+
+  font: 18px/1.5 var(--font-text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 640px) {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--sky-top);
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ============================================================
+   SCENE
+   ============================================================ */
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: linear-gradient(
+    180deg,
+    var(--sky-top) 0%,
+    var(--sky-upper) 26%,
+    var(--sky-mid) 48%,
+    var(--sky-low) 70%,
+    var(--sky-horizon) 100%
+  );
+  cursor: crosshair;
+}
+
+/* SUN ---------------------------------------------------- */
+.sun {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: clamp(220px, 38vw, 460px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: sun-breathe var(--dur-slow) ease-in-out infinite;
+}
+
+.sun__disc {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 34%,
+    #fff7d6 0%,
+    var(--sun) 40%,
+    var(--gold) 78%,
+    var(--petal-deep) 100%
+  );
+  box-shadow:
+    0 0 60px 24px var(--sky-horizon-glow),
+    0 0 180px 80px rgba(255, 201, 122, 0.28);
+}
+
+.sun__rays {
+  position: absolute;
+  inset: 0;
+  animation: rotate 56s linear infinite;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 220, 140, 0.22) 0deg 6deg,
+    transparent 6deg 14deg
+  );
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(circle, transparent 40%, #000 44%);
+  mask: radial-gradient(circle, transparent 40%, #000 44%);
+}
+
+@keyframes sun-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.035; }
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* CLOUDS ------------------------------------------------ */
+.cloud {
+  position: absolute;
+  left: -30%;
+  top: 8%;
+  width: clamp(160px, 24vw, 300px);
+  height: 54px;
+  pointer-events: none;
+  filter: blur(0.4px);
+  animation: cloud-drift var(--dur-cloud, 38s) linear var(--cloud-delay, 0s) infinite;
+  opacity: 0;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 214, 182, 0.3);
+  border-radius: 50%;
+}
+
+.cloud::before {
+  left: 18%;
+  top: 38%;
+  width: 45%;
+  height: 88%;
+}
+
+.cloud::after {
+  right: 16%;
+  top: 10%;
+  width: 38%;
+  height: 70%;
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(0); opacity: 0; }
+  8% { opacity: 0.7; }
+  85% { opacity: 0.7; }
+  100% { transform: translateX(150vw); opacity: 0; }
+}
+
+/* HILLS ------------------------------------------------- */
+.hill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  line-height: 0;
+}
+.hill svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hill--near {
+  z-index: 6;
+  bottom: -1.5%;
+}
+
+.hill--far {
+  z-index: 2;
+  bottom: -3%;
+  opacity: 0.94;
+}
+
+/* FLOWER FIELD ------------------------------------------ */
+.field-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.field-layer--front {
+  z-index: 5;
+}
+
+.flower {
+  position: absolute;
+  animation: sway var(--durB, var(--dur-breeze)) var(--delB, 0s) var(--ease-sway) infinite;
+  transform-origin: 50% 100%;
+}
+
+.flower--grow__in {
+  animation:
+    bloom 0.9s var(--ease-spring) both,
+    sway var(--durB, var(--dur-breeze)) calc(0.9s + var(--delB, 0s)) var(--ease-sway) infinite;
+  transform-origin: 50% 100%;
+}
+
+.flower .fl-svg {
+  display: block;
+  overflow: visible;
+}
+
+@keyframes sway {
+  0%, 100% { rotate: -2.4deg; }
+  50% { rotate: 2.4deg; }
+}
+
+@keyframes bloom {
+  0% { transform: scale(0) translateY(18px); opacity: 0; }
+  60% { transform: scale(1.1) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* PETALS (falling) -------------------------------------- */
+.petals {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -6vh;
+  width: var(--petal-w, 13px);
+  aspect-ratio: 0.62;
+  animation: petal-fall var(--petal-dur, 9s) linear var(--petal-delay, 0s) infinite;
+}
+
+.petal__leaf {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--petal-color, var(--petal));
+  border-radius: 120% 0 120% 0 / 60% 34% 66% 34%;
+  opacity: 0.88;
+  animation: petal-sway var(--petal-sway, 3.2s) var(--ease-sway) infinite;
+}
+
+@keyframes petal-fall {
+  0% { transform: translateY(-6vh); opacity: 0; }
+  8% { opacity: 0.9; }
+  90% { opacity: 0.85; }
+  100% { transform: translateY(112vh); opacity: 0.1; }
+}
+
+@keyframes petal-sway {
+  0%, 100% { rotate: -28deg; translate: -1.6vw; }
+  50% { rotate: 34deg; translate: 1.6vw; }
+}
+
+/* FIREFLIES / luceros ----------------------------------- */
+.fireflies {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.glow {
+  position: absolute;
+  width: 6px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffe9a8;
+  box-shadow: 0 0 12px 4px rgba(255, 220, 140, 0.65);
+  animation: glow-rise var(--glow-dur, 12s) var(--ease-out) var(--glow-delay, 0s) infinite;
+  opacity: 0;
+}
+
+.glow::after {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 238, 178, 0.5), transparent 70%);
+}
+
+@keyframes glow-rise {
+  0% { transform: translate(var(--glow-x, 2vw), 0) scale(0.5); opacity: 0; }
+  15% { opacity: 0.9; }
+  70% { opacity: 0.55; }
+  100% { transform: translate(calc(var(--glow-x, 2vw) * -1.2), -56vh) scale(1.05); opacity: 0; }
+}
+
+/* UI OVERLAY + MESSAGE ---------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(1rem, 4vw, 2.5rem) var(--space-s);
+  text-align: center;
+  pointer-events: none;
+}
+
+.overlay__inner {
+  pointer-events: auto;
+  max-width: 44rem;
+  margin-top: clamp(2.5vh, 4vh, 6vh);
+  animation: fade-up 1.1s var(--ease-out) 0.25s both;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(255, 248, 234, 0.35);
+  border-radius: var(--radius);
+  background: rgba(31, 35, 85, 0.18);
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.title {
+  margin: var(--space-s) 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-5);
+  line-height: 1.05;
+  color: var(--ink);
+  text-shadow: 0 2px 24px rgba(20, 14, 40, 0.45);
+  letter-spacing: 0.01em;
+}
+.title-em {
+  display: block;
+  font-style: italic;
+  font-size: 0.72em;
+  font-weight: 500;
+  color: var(--gold-soft);
+  margin-top: 0.06em;
+}
+
+.verse {
+  margin: var(--space-m) auto 0;
+  max-width: 30rem;
+  font-size: clamp(1rem, 1.05rem + 0.3vw, 1.2rem);
+  line-height: 1.65;
+  color: var(--ink-2);
+  animation: fade-up 1.1s var(--ease-out) 0.6s both;
+}
+
+.accent-note {
+  margin-top: var(--space-s);
+  font-size: var(--step--1);
+  color: var(--ink-3);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@keyframes fade-up {
+  from { transform: translateY(22px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* CTA — send a kiss -------------------------------------- */
+.cta-row {
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  justify-content: center;
+  animation: fade-up 1.1s var(--ease-out) 0.95s both;
+}
+
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.9rem;
+  border: none;
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--accent), var(--accent-deep));
+  color: #fff7f4;
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px -8px rgba(230, 54, 82, 0.65),
+    0 2px 6px rgba(20, 14, 40, 0.25);
+  transition:
+    transform var(--dur) var(--ease-spring),
+    box-shadow var(--dur) var(--ease-out),
+    filter var(--dur-fast);
+}
+
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 12%,
+    transparent 26%
+  );
+  animation: shine 3.4s linear infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  to { transform: rotate(360deg); }
+}
+
+.cta:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.06);
+  box-shadow:
+    0 14px 36px -8px rgba(230, 54, 82, 0.75),
+    0 3px 8px rgba(20, 14, 40, 0.3);
+}
+
+.cta:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 6px 18px -6px rgba(230, 54, 82, 0.7);
+}
+
+.cta:focus-visible {
+  outline: 3px solid var(--gold-soft);
+  outline-offset: 3px;
+}
+
+.cta[aria-busy="true"] {
+  opacity: 0.7;
+}
+
+.cta .heart {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  animation: heartbeat 1.3s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { scale: 1; }
+  14% { scale: 1.28; }
+  28% { scale: 1; }
+  42% { scale: 1.18; }
+  56% { scale: 1; }
+}
+
+/* hint pill under CTA */
+.hint {
+  margin: var(--space-m) auto 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fade-up 1.1s var(--ease-out) 1.1s both;
+}
+
+.hint__flower {
+  width: 15px;
+  height: 15px;
+  fill: var(--gold);
+}
+
+.counter {
+  margin: var(--space-s) auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 248, 234, 0.3);
+  background: rgba(31, 35, 85, 0.22);
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fade-up 0.8s var(--ease-spring) both;
+}
+
+/* Confirmation message after sending a kiss */
+.love-note {
+  margin-top: clamp(1rem, 3vh, 2rem);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-2);
+  line-height: 1.35;
+  color: var(--gold-soft);
+  text-shadow: 0 2px 18px rgba(20, 14, 40, 0.6);
+  animation: fade-up 0.9s var(--ease-spring) both;
+}
+
+.stagger > * {
+  animation: fade-up 0.9s var(--ease-out) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger > *:nth-child(2) { animation-delay: 0.25s; }
+.stagger > *:nth-child(3) { animation-delay: 0.4s; }
+
+/* BURSTS (hearts / sparkles) ------------------------------ */
+.bursts {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: var(--bx, 50%);
+  top: var(--by, 55%);
+}
+
+.burst-particle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  animation: burst-fly var(--pd, 1.3s) var(--ease-out) both;
+}
+
+.burst-particle__shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.burst-particle__shape svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes burst-fly {
+  0% {
+    transform: translate(0, 0) scale(0.2) rotate(0deg);
+    opacity: 0;
+  }
+  12% { opacity: 1; }
+  100% {
+    transform: translate(
+        var(--tx, 0px),
+        var(--ty, -180px)
+      )
+      scale(1.05) rotate(var(--rot, 20deg));
+    opacity: 0;
+  }
+}
+
+.burst-particle__shape--sparkle {
+  background: var(--gold);
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  box-shadow: 0 0 14px 4px rgba(255, 209, 77, 0.6);
+}
+
+/* VIGNETTE ----------------------------------------------- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 30%, transparent 55%, rgba(15, 10, 30, 0.5) 100%),
+    linear-gradient(180deg, rgba(15, 10, 30, 0.28), transparent 22%, transparent 82%, rgba(15, 10, 30, 0.42));
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .petals,
+  .fireflies {
+    display: none;
+  }
+
+  .flower,
+  .flower--grow__in {
+    animation: none;
+  }
+
+  .flower--grow__in {
+    opacity: 1;
+  }
+}
