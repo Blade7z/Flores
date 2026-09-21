@@ -104,7 +104,7 @@ body {
   position: relative;
   height: 220vh;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   background: linear-gradient(
@@ -117,7 +117,12 @@ body {
   cursor: crosshair;
 }
 
-.scene--dark,
+.scene--dark {
+  height: 100vh;
+  overflow: hidden;
+  cursor: default;
+}
+
 .scene--dark * {
   cursor: default;
 }
@@ -127,18 +132,14 @@ body {
 
    SUN ---------------------------------------------------- */
 .sun {
-  position: absolute;
+  position: fixed;
   left: auto;
-  top: 6%;
+  top: clamp(1rem, 4vh, 3.5rem);
   right: clamp(1rem, 5vw, 5.5rem);
   width: clamp(130px, 20vw, 280px);
   aspect-ratio: 1;
   pointer-events: none;
-  animation:
-    sun-breathe var(--dur-slow) ease-in-out infinite,
-    sun-follow 1s linear;
-  animation-timeline: auto, scroll(root);
-  animation-range: auto, 0% 100%;
+  animation: sun-breathe var(--dur-slow) ease-in-out infinite;
 }
 
 .sun__disc {
@@ -176,10 +177,7 @@ body {
   50% { scale: 1.035; }
 }
 
-@keyframes sun-follow {
-  0% { translate: 0 0; }
-  100% { translate: 0 52vh; }
-}
+
 
 @keyframes rotate {
   to { transform: rotate(360deg); }
@@ -187,7 +185,7 @@ body {
 
 /* CLOUDS ------------------------------------------------ */
 .cloud {
-  position: absolute;
+  position: fixed;
   left: -30%;
   top: 10%;
   width: clamp(160px, 24vw, 300px);
@@ -228,17 +226,17 @@ body {
 
 /* HILLS ------------------------------------------------- */
 .hill {
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  bottom: -1px;
   left: 0;
   right: 0;
   width: 100%;
   pointer-events: none;
   line-height: 0;
 }
+
 .hill svg {
   width: 100%;
-  height: auto;
   display: block;
 }
 
@@ -248,8 +246,34 @@ body {
 
 .hill--far {
   z-index: 2;
-  bottom: -6%;
   opacity: 0.96;
+}
+
+/* GRASS TUFTS ------------------------------------------- */
+.tufts {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22vh;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.tuft {
+  position: absolute;
+  animation: tuft-sway var(--tuSway, 3.4s) var(--ease-sway) var(--tuDelay, 0s) infinite;
+  transform-origin: 50% 100%;
+}
+
+.tuft svg {
+  display: block;
+  width: 100%;
+}
+
+@keyframes tuft-sway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
 }
 
 /* FLOWER FIELD ------------------------------------------ */
@@ -521,7 +545,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 var(--space-s);
+  padding: clamp(1rem, 2.5vh, 2.5rem) var(--space-s) 0;
   text-align: center;
   pointer-events: none;
 }
@@ -529,7 +553,7 @@ body {
 .overlay__inner {
   pointer-events: auto;
   max-width: 46rem;
-  margin-top: clamp(3.5vh, 5vh, 7vh);
+  margin-top: 0;
   padding: clamp(1.4rem, 2.6vw, 2.4rem) clamp(1.25rem, 3vw, 2.75rem);
   border: 1px solid rgba(255, 253, 244, 0.22);
   border-radius: 26px;
@@ -740,7 +764,7 @@ body {
 
 /* BURSTS (sparkles) -------------------------------------- */
 .bursts {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 11;
   pointer-events: none;
