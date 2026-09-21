@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { rand } from '../lib/random';
 
-interface GlowSpec {
+interface MoteSpec {
   left: number;
   bottom: number;
   x: number;
@@ -9,14 +9,14 @@ interface GlowSpec {
   delay: number;
 }
 
-const COUNT = 12;
+const COUNT = 14;
 
-export function Fireflies() {
-  const glows = useMemo<GlowSpec[]>(
+export function Motes() {
+  const motes = useMemo<MoteSpec[]>(
     () =>
       Array.from({ length: COUNT }).map(() => ({
         left: rand(3, 97),
-        bottom: rand(0, 42),
+        bottom: rand(0, 40),
         x: rand(-4, 4),
         dur: rand(9, 16),
         delay: -rand(0, 16),
@@ -25,17 +25,17 @@ export function Fireflies() {
   );
 
   return (
-    <div className="fireflies" aria-hidden="true">
-      {glows.map((g, i) => (
+    <div className="motes" aria-hidden="true">
+      {motes.map((m, i) => (
         <span
           key={i}
           className="glow"
           style={{
-            left: `${g.left}%`,
-            bottom: `${g.bottom}%`,
-            ['--glow-x' as string]: `${g.x}vw`,
-            ['--glow-dur' as string]: `${g.dur}s`,
-            ['--glow-delay' as string]: `${g.delay}s`,
+            left: `${m.left}%`,
+            bottom: `${m.bottom}%`,
+            ['--glow-x' as string]: `${m.x}vw`,
+            ['--glow-dur' as string]: `${m.dur}s`,
+            ['--glow-delay' as string]: `${m.delay}s`,
           }}
         />
       ))}

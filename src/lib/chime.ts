@@ -2,7 +2,10 @@ let ctx: AudioContext | null = null;
 
 function ensureCtx(): AudioContext | null {
   try {
-    const w = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
+    const w = window as unknown as {
+      AudioContext?: typeof AudioContext;
+      webkitAudioContext?: typeof AudioContext;
+    };
     ctx ??= new (w.AudioContext ?? w.webkitAudioContext!)();
     if (ctx.state === 'suspended') void ctx.resume();
     return ctx;
@@ -11,16 +14,9 @@ function ensureCtx(): AudioContext | null {
   }
 }
 
-function pluck(
-  ac: AudioContext,
-  freq: number,
-  start: number,
-  duration: number,
-  volume = 0.07,
-) {
+function pluck(ac: AudioContext, freq: number, start: number, duration: number, volume = 0.06) {
   const osc = ac.createOscillator();
   const gain = ac.createGain();
-
   const until = ac.currentTime + start;
 
   osc.type = 'sine';
@@ -37,15 +33,16 @@ function pluck(
   osc.stop(until + duration + 0.05);
 }
 
-export function chime(kind: 'grow' | 'kiss' = 'grow'): void {
+export function chime(): void {
   const ac = ensureCtx();
   if (!ac) return;
+  pluck(ac, 523.25, 0, 0.55, 0.05);
+  pluck(ac, 783.99, 0.07, 0.6, 0.045);
+}
 
-  if (kind === 'grow') {
-    pluck(ac, 523.25, 0, 0.55, 0.05);
-    pluck(ac, 783.99, 0.07, 0.6, 0.045);
-  } else {
-    const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
-    notes.forEach((n, i) => pluck(ac, n, i * 0.06, 0.7, 0.05));
-  }
+export function gardenChime(): void {
+  const ac = ensureCtx();
+  if (!ac) return;
+  const notes = [523.25, 659.25, 783.99, 1046.5];
+  notes.forEach((n, i) => pluck(ac, n, i * 0.06, 0.7, 0.05));
 }

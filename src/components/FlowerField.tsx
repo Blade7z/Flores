@@ -1,7 +1,12 @@
 import { useMemo } from 'react';
 import { Flower } from './Flower';
+import { FlowerGradients } from './FlowerGradients';
 import { rand, randInt } from '../lib/random';
 import type { FlowerSpec, GrownFlower } from '../types';
+
+interface SeedSpec extends FlowerSpec {
+  seedD: number;
+}
 
 interface RowOpts {
   bottom0: number;
@@ -23,25 +28,31 @@ function makeRow(n: number, o: RowOpts): FlowerSpec[] {
   }));
 }
 
-const BACK_ROW = makeRow(16, { bottom0: 27, bottom1: 22, size0: 64, size1: 104 });
-const MID_ROW = makeRow(14, { bottom0: 20, bottom1: 15, size0: 130, size1: 210 });
+const BACK_ROW = makeRow(16, { bottom0: 34, bottom1: 28, size0: 64, size1: 104 });
+const MID_ROW = makeRow(14, { bottom0: 25, bottom1: 18, size0: 130, size1: 215 });
 
 export function FlowerField({ grown }: { grown: readonly GrownFlower[] }) {
-  const staticFlowers = useMemo(() => [...BACK_ROW, ...MID_ROW], []);
+  const seeds = useMemo<SeedSpec[]>(() => {
+    const all = [...BACK_ROW, ...MID_ROW].sort((a, b) => a.left - b.left);
+    return all.map((f, i) => ({ ...f, seedD: i * 0.085 + rand(0, 0.12) }));
+  }, []);
 
   return (
     <>
+      <FlowerGradients />
+
       <div className="field-layer" aria-hidden="true">
-        {staticFlowers.map((f) => (
+        {seeds.map((f) => (
           <div
             key={f.id}
-            className="flower"
+            className="flower flower--seed"
             style={{
               left: `calc(${f.left}% - ${f.size / 2}px)`,
               bottom: `${f.bottom}%`,
               width: f.size,
               ['--durB' as string]: `${f.dur}s`,
               ['--delB' as string]: `${f.delay}s`,
+              ['--seedD' as string]: `${f.seedD}s`,
             }}
           >
             <Flower size={f.size} variant={f.variant} flipped={f.flipped} />
