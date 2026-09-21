@@ -3,6 +3,7 @@ import { Sun } from './components/Sun';
 import { Clouds } from './components/Clouds';
 import { Ground } from './components/Ground';
 import { HeroFlora } from './components/HeroFlora';
+import { Flower } from './components/Flower';
 import { FlowerField } from './components/FlowerField';
 import { GrassTufts } from './components/GrassTufts';
 import { Bugs } from './components/Bugs';
@@ -54,12 +55,12 @@ function App() {
     setBursts((prev) => prev.filter((b) => b.id !== id));
   }, []);
 
-  const plantFlower = useCallback((left: number, bottom: number) => {
+  const plantFlower = useCallback((left: number, y: number) => {
     idRef.current += 1;
     const flower: GrownFlower = {
       id: idRef.current,
       left: Math.min(96, Math.max(4, left)),
-      bottom: Math.min(20, Math.max(3, bottom)),
+      top: Math.min(95, Math.max(2, y)),
       scale: rand(0.8, 1.35),
       variant: randInt(0, 4),
       flipped: Math.random() > 0.5,
@@ -79,7 +80,7 @@ function App() {
     if (!rect) return;
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    plantFlower(x, Math.min(18, Math.max(2, 100 - y)));
+    plantFlower(x, y);
     spawnBurst(Math.min(96, Math.max(4, x)), y, 8);
     chime();
   };
@@ -124,13 +125,35 @@ function App() {
 
       {opened && (
         <section className="garden">
-          <FlowerField grown={grown} />
+          <FlowerField />
           <GrassTufts />
           <Bugs />
           <Motes />
           <PetalRain />
         </section>
       )}
+
+      <div className="field-layer field-layer--front" aria-hidden="true">
+        {grown.map((f) => {
+          const size = 190 * f.scale;
+          return (
+            <div
+              key={f.id}
+              className="flower flower--grow__in"
+              style={{
+                left: `calc(${f.left}% - ${size / 2}px)`,
+                top: `${f.top}%`,
+                width: size,
+                ['--durB' as string]: `${3.6 + f.scale}s`,
+              }}
+            >
+              <div className="flower__bloom">
+                <Flower size={size} variant={f.variant} flipped={f.flipped} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       <div className="bursts" aria-hidden="true">
         {bursts.map((b) => (

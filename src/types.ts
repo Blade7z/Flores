@@ -1,7 +1,7 @@
 export interface GrownFlower {
   id: number;
   left: number;
-  bottom: number;
+  top: number;
   scale: number;
   variant: number;
   flipped: boolean;

@@ -2,82 +2,58 @@ import { useMemo } from 'react';
 import { Flower } from './Flower';
 import { FlowerGradients } from './FlowerGradients';
 import { rand, randInt } from '../lib/random';
-import type { FlowerSpec, GrownFlower } from '../types';
 
-interface SeedSpec extends FlowerSpec {
-  seedD: number;
+interface MeadowFlower {
+  id: number;
+  left: number;
+  top: number;
+  size: number;
+  variant: number;
+  flipped: boolean;
+  durB: number;
+  delB: number;
 }
 
-interface RowOpts {
-  bottom0: number;
-  bottom1: number;
-  size0: number;
-  size1: number;
-}
-
-function makeRow(n: number, o: RowOpts): FlowerSpec[] {
-  return Array.from({ length: n }).map((_, i) => ({
+const MEADOW: MeadowFlower[] = Array.from({ length: 28 }).map((_, i) => {
+  const top = rand(3, 88);
+  const size = (58 + (top / 100) * 150) * rand(0.82, 1.18);
+  return {
     id: i,
-    left: Math.min(96, Math.max(3, ((i + 0.5) / n) * 100 + rand(-3.5, 3.5))),
-    bottom: rand(o.bottom0, o.bottom1),
-    size: rand(o.size0, o.size1),
+    left: Math.min(97, Math.max(3, ((i + 0.5) / 28) * 100 + rand(-3.5, 3.5))),
+    top,
+    size,
     variant: randInt(0, 4),
-    delay: rand(0, 2.5),
-    dur: rand(3.8, 6.2),
     flipped: Math.random() > 0.5,
-  }));
-}
+    durB: rand(3.8, 6.2),
+    delB: rand(0, 2.6),
+  };
+});
 
-const BACK_ROW = makeRow(16, { bottom0: 34, bottom1: 28, size0: 64, size1: 104 });
-const MID_ROW = makeRow(14, { bottom0: 25, bottom1: 18, size0: 130, size1: 215 });
-
-export function FlowerField({ grown }: { grown: readonly GrownFlower[] }) {
-  const seeds = useMemo<SeedSpec[]>(() => {
-    const all = [...BACK_ROW, ...MID_ROW].sort((a, b) => a.left - b.left);
-    return all.map((f, i) => ({ ...f, seedD: i * 0.24 + rand(0, 0.3) }));
-  }, []);
+export function FlowerField() {
+  const meadow = useMemo(() => MEADOW.slice().sort((a, b) => a.top - b.top), []);
 
   return (
     <>
       <FlowerGradients />
 
       <div className="field-layer" aria-hidden="true">
-        {seeds.map((f) => (
+        {meadow.map((f) => (
           <div
             key={f.id}
-            className="flower flower--seed"
+            className="flower flower--scroll"
             style={{
               left: `calc(${f.left}% - ${f.size / 2}px)`,
-              bottom: `${f.bottom}%`,
+              top: `${f.top}%`,
               width: f.size,
-              ['--durB' as string]: `${f.dur}s`,
-              ['--delB' as string]: `${f.delay}s`,
-              ['--seedD' as string]: `${f.seedD}s`,
+              ['--durB' as string]: `${f.durB}s`,
+              ['--delB' as string]: `${f.delB}s`,
             }}
           >
-            <Flower size={f.size} variant={f.variant} flipped={f.flipped} />
+            <div className="flower__bloom">
+              <Flower size={f.size} variant={f.variant} flipped={f.flipped} />
+            </div>
           </div>
         ))}
-      </div>
-
-      <div className="field-layer field-layer--front" aria-hidden="true">
-        {grown.map((f) => {
-          const size = 200 * f.scale;
-          return (
-            <div
-              key={f.id}
-              className="flower flower--grow__in"
-              style={{
-                left: `calc(${f.left}% - ${size / 2}px)`,
-                bottom: `${f.bottom}%`,
-                width: size,
-                ['--durB' as string]: `${3.6 + f.scale}s`,
-              }}
-            >
-              <Flower size={size} variant={f.variant} flipped={f.flipped} />
-            </div>
-          );
-        })}
       </div>
     </>
   );
