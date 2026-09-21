@@ -89,21 +89,20 @@
 body {
   margin: 0;
   background: var(--night);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 #root {
   width: 100vw;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
 }
 
 /* ============================================================
    SCENE
    ============================================================ */
 .scene {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  min-height: 100vh;
   overflow: hidden;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -122,14 +121,30 @@ body {
   cursor: default;
 }
 
+/* HERO: primera pantalla, mensaje arriba, flores chicas abajo */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* GARDEN: al hacer scroll, el jardín toma el protagonismo */
+.garden {
+  position: relative;
+  width: 100%;
+  min-height: 150vh;
+}
+
 /* SUN ---------------------------------------------------- */
 .sun {
   position: absolute;
-  left: 50%;
-  top: 28%;
-  width: clamp(220px, 38vw, 460px);
+  left: auto;
+  top: 6%;
+  right: clamp(1rem, 5vw, 5.5rem);
+  width: clamp(130px, 20vw, 280px);
   aspect-ratio: 1;
-  translate: -50% -50%;
   pointer-events: none;
   animation: sun-breathe var(--dur-slow) ease-in-out infinite;
 }
@@ -253,6 +268,11 @@ body {
 
 .field-layer--front {
   z-index: 5;
+}
+
+/* Área frontal del hero: flores chicas que asoman delante de las colinas */
+.hero-flora {
+  z-index: 7;
 }
 
 .flower {
@@ -490,22 +510,32 @@ body {
 
 /* UI OVERLAY + MESSAGE ---------------------------------- */
 .overlay {
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
   z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: clamp(1rem, 4vw, 2.5rem) var(--space-s);
+  padding: 0 var(--space-s);
   text-align: center;
   pointer-events: none;
 }
 
 .overlay__inner {
   pointer-events: auto;
-  max-width: 44rem;
-  margin-top: clamp(2.5vh, 4vh, 6vh);
+  max-width: 46rem;
+  margin-top: clamp(3.5vh, 5vh, 7vh);
+  padding: clamp(1.4rem, 2.6vw, 2.4rem) clamp(1.25rem, 3vw, 2.75rem);
+  border: 1px solid rgba(255, 253, 244, 0.22);
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(14, 48, 33, 0.38), rgba(14, 48, 33, 0.22));
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  box-shadow: 0 20px 60px -24px rgba(8, 28, 18, 0.55);
   animation: fade-up 1.4s var(--ease-out) 0.9s both;
 }
 

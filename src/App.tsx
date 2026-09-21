@@ -2,6 +2,7 @@ import { useCallback, useRef, useState, type MouseEvent } from 'react';
 import { Sun } from './components/Sun';
 import { Clouds } from './components/Clouds';
 import { Ground } from './components/Ground';
+import { HeroFlora } from './components/HeroFlora';
 import { FlowerField } from './components/FlowerField';
 import { GrassTufts } from './components/GrassTufts';
 import { Bugs } from './components/Bugs';
@@ -88,46 +89,47 @@ function App() {
       ref={sceneRef}
       className={`scene ${opened ? '' : 'scene--dark'}`}
       onClick={handleSceneClick}
-      aria-label="Jardín de flores amarillas interactivo"
+      aria-label="JardÃƒÂ­n de flores amarillas interactivo"
     >
-      <Sun />
-      <Clouds />
-      <Ground layer="far" />
+      <section className="hero">
+        <Sun />
+        <Clouds />
+        <Ground layer="far" />
+        <div className="field-layer hero-flora" aria-hidden="true">
+          {opened && <HeroFlora />}
+        </div>
+        <Ground layer="near" />
+
+        {opened && (
+          <div className="overlay">
+            <div className="overlay__inner">
+              <span className="eyebrow">Un jardÃƒÂ­n hecho para ti</span>
+              <h1 className="title">
+                Flores amarillas
+                <span className="title-em">para ti</span>
+              </h1>
+              <p className="verse">
+                Para la persona que enciende mis dÃƒÂ­as: cada pÃƒÂ©talo guarda un poco de tu luz.
+              </p>
+              <span className="hint">
+                <FlowerIcon />
+                TocÃƒÂ¡ en cualquier lado y plantÃƒÂ¡ tu flor
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="vignette" />
+      </section>
 
       {opened && (
-        <>
+        <section className="garden">
           <FlowerField grown={grown} />
-          <Bugs />
-        </>
-      )}
-
-      <Ground layer="near" />
-
-      {opened && (
-        <>
           <GrassTufts />
+          <Bugs />
           <Motes />
           <PetalRain />
-        </>
-      )}
-
-      {opened && (
-        <div className="overlay">
-          <div className="overlay__inner">
-<span className="eyebrow">Un jardín hecho para ti</span>
-            <h1 className="title">
-              Flores amarillas
-              <span className="title-em">para ti</span>
-            </h1>
-            <p className="verse">
-              Para la persona que enciende mis días: cada pétalo guarda un poco de tu luz.
-            </p>
-<span className="hint">
-              <FlowerIcon />
-              Tocá en cualquier lado y plantá tu flor
-            </span>
-          </div>
-        </div>
+        </section>
       )}
 
       <div className="bursts" aria-hidden="true">
@@ -135,8 +137,6 @@ function App() {
           <Burst key={b.id} item={b} onDone={removeBurst} />
         ))}
       </div>
-
-      <div className="vignette" />
 
       <div className={opened ? 'curtain curtain--open' : 'curtain'} aria-hidden={opened}>
         <div className="curtain__inner">
@@ -150,10 +150,10 @@ function App() {
               <circle r="3" />
             </g>
           </svg>
-          <p className="curtain__line">Hay un jardín esperándote</p>
+          <p className="curtain__line">Hay un jardÃƒÂ­n esperÃƒÂ¡ndote</p>
           <button type="button" className="cta cta--open" onClick={openGarden}>
             <HeartIcon />
-            Ábreme
+            ÃƒÂbreme
           </button>
           <span className="curtain__hint">un clic y todo florece</span>
         </div>
